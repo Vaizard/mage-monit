@@ -1,0 +1,17 @@
+# file: monit/meta/main.yml
+
+galaxy_info:
+  author: Pavel Stratil
+  company: Vaizard Institute
+  description: "Installs and manages Monit."
+  min_ansible_version: 2.4
+  license: MIT
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+  - system
+  - monitoring
+
+dependencies: []

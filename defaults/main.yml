@@ -1,0 +1,81 @@
+---
+
+# ##########################################
+# BASIC SETUP ##############################
+# ##########################################
+monit_logfile:          "syslog facility log_daemon"
+monit_poll_period:      60
+monit_poll_start_delay: 6
+
+
+
+# ###########################################
+# EVENT QUEUE AND NOTIFICATIONS #############
+# ###########################################
+
+monit_email_enable: yes
+monit_email_to: ''             # string or list
+
+
+monit_eventqueue_enable:    yes
+monit_eventqueue_directory: "/var/lib/monit/events"
+monit_eventqueue_slots:     500
+
+monit_mailformat_from: "monit@{{inventory_hostname}}"
+monit_mailformat_subject: "$SERVICE $EVENT"
+monit_mailformat_message: "Monit $ACTION $SERVICE at $DATE on $HOST: $DESCRIPTION."
+
+monit_mailserver_host: "localhost"
+monit_mailserver_timeout: 60
+# monit_mailserver_port:
+# monit_mailserver_username:
+# monit_mailserver_password:
+# monit_mailserver_encryption:
+
+
+# ############################################
+# ## HTTPS INTERFACE #########################
+# ############################################
+
+monit_http_port: 3737
+monit_http_address: "localhost"
+monit_http_cert: "/etc/ssl/private/mage-snakeoil-combined.pem"
+monit_http_allow: []
+#  - "localhost"     # require localhost to connect 
+#  - "admin:monit"   # require basic auth login
+
+
+# ############################################
+# ## CUSTOM CHECKS ###########################
+# ############################################
+
+monit_checks:
+  - type: system
+    name: "{{ ansible_hostname }}"
+    script: |
+      if loadavg (1min) > 4 then alert
+      if loadavg (5min) > 3 then alert
+      if memory usage > 85% then alert
+      if swap usage > 75% then alert
+      if cpu usage (user) > 80% then alert
+      if cpu usage (system) > 60% then alert
+      if cpu usage (wait) > 20% then alert
+#  - type: filesystem
+#    name: 'foo'
+#    path: '/run/foo.pid'
+#    script: |
+#  - type: address
+#    name: 'myserver'
+#    address: '192.168.1.1'
+#    script: |
+#  - type: process
+#    name: 'foo'
+#    pid: '/run/foo.pid'
+#    # optional
+#    start: '/usr/sbin/service process start'
+#    stop: '/usr/sbin/service process stop'
+#    timeout: 60
+#    script: |
+
+
+
