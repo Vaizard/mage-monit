@@ -1,7 +1,7 @@
 # This file is managed by Ansible, all changes will be lost
 {% if item.type == 'process' %}
-{% set monit_tpl_process = item.process | default(item.pid | basename | replace('.pid', '')) -%}
-check process {{ monit_tpl_proces }} with pidfile {{ item.pid }}
+{% set monit_tpl_process = item.name | default(item.pid | basename | replace('.pid', '')) -%}
+check process {{ monit_tpl_process }} with pidfile {{ item.pid }}
   start program = "{{ item.start | default('/usr/sbin/service ' + monit_tpl_process + " start") }}" with timeout {{ item.timeout | default("60") }} seconds
   stop program = "{{ item.stop | default('/usr/sbin/service ' + monit_tpl_process + " stop") }}"
 {% if item.script is defined and item.script %}{{ item.script | indent(2, true) }}{% endif %}
