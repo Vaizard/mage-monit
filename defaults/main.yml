@@ -4,7 +4,7 @@
 # BASIC SETUP ##############################
 # ##########################################
 monit_logfile:          "syslog facility log_daemon"
-monit_poll_period:      60
+monit_poll_period:      45
 monit_poll_start_delay: 6
 
 

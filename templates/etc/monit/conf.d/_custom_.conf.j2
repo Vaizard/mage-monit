@@ -6,24 +6,23 @@
 {% set monit_tpl_process = item.name -%}
 {% endif %}
 check process {{ monit_tpl_process }}{{ ' with pidfile ' + item.pid if item.pid is defined else ' matching "' + monit_tpl_process + '*"' }}
-{{ ' matching ' + item.matching if item.matching is defined else '' }}
   start program = "{{ item.start | default('/usr/sbin/service ' + monit_tpl_process + " start") }}" with timeout {{ item.timeout | default("60") }} seconds
   stop program = "{{ item.stop | default('/usr/sbin/service ' + monit_tpl_process + " stop") }}"
 {% if item.script is defined and item.script %}{{ item.script | indent(2, true) }}{% endif %}
 {% endif %}
-
 {% if item.type == 'system' -%}
 check system {{ item.name }}
 {% if item.script is defined and item.script %}{{ item.script | indent(2, true) }}{% endif %}
 {% endif %}
-
 {% if item.type == 'address' -%}
 check address {{ item.name }} with address {{ item.address }}
 {% if item.script is defined and item.script %}{{ item.script | indent(2, true) }}{% endif %}
 {% endif %}
-
 {% if item.type == 'filesystem' -%}
 check filesystem {{ item.name }} with path {{ item.path }}
 {% if item.script is defined and item.script %}{{ item.script | indent(2, true) }}{% endif %}
 {% endif %}
-
+{% if item.type == 'program' -%}
+check program {{ item.name }} with path {{ item.path }}
+{% if item.script is defined and item.script %}{{ item.script | indent(2, true) }}{% endif %}
+{% endif %}
